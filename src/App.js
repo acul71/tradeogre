@@ -1,5 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg'
+import './App.css'
+//import 'bootstrap/dist/css/boostrap.min.css'
+//import 'bootswatch/dist/darkly/bootstrap.min.css'
+import 'bootswatch/dist/flatly/bootstrap.min.css'
+import '@fortawesome/fontawesome-free/js/all' 
 
 function App() {
   return (
