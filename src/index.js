@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+//import {tradeOgreInit, checkPasswordFile} from './lib/utils'
+
+//tradeOgreInit()
+//const firstTime = checkPasswordFile() ? false : true
+const firstTime = false
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App firstTime={firstTime}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
