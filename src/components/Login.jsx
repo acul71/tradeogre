@@ -35,6 +35,7 @@ function Login(props) {
 
    return (
       <Container fluid="sm">
+         <h2>Login</h2>
          <Form onSubmit={(e) => e.preventDefault()}>
             <Form.Group className='ml-1 mt-3' controlId="password">
                <Col sm={3}>
