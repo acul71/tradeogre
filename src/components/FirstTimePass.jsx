@@ -5,8 +5,10 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 
+const bcrypt = require('bcryptjs')
 
-function FirstTimePass() {
+
+function FirstTimePass(props) {
    
    let password = React.createRef()
    let passwordMsg = React.createRef()
@@ -47,6 +49,10 @@ function FirstTimePass() {
    function handleSubmit(e) {
       if (passLength && passConf) {
          //passwordErrorMsg.current.textContent = ''
+         const salt = bcrypt.genSaltSync(12)
+         const passwordHash = bcrypt.hashSync(password.current.value, salt)
+         localStorage.setItem('password', passwordHash)
+         props.setFirstTime(false)
          console.log('Submit: Right!')
       } else {
          

@@ -6,9 +6,13 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 const bcrypt = require('bcryptjs')
 
-const PASSWORD = 'test'
-const salt = bcrypt.genSaltSync(12)
-const passwordHash = bcrypt.hashSync(PASSWORD, salt)
+// Testing
+//const PASSWORD = localStorage.getItem('password')
+//const salt = bcrypt.genSaltSync(12)
+//const passwordHash = bcrypt.hashSync(PASSWORD, salt)
+//console.log("passwordHash=", passwordHash)
+
+const passwordHash = localStorage.getItem('password')
 
 function Login(props) {
    let password = React.createRef()
@@ -21,6 +25,7 @@ function Login(props) {
          passwordMsg.current.textContent = ''
          console.log('Password is right!')
          props.enableAuth()
+         
       } else {
          passwordMsg.current.textContent = 'Wrong password!'
       }
