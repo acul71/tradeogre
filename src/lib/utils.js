@@ -58,7 +58,14 @@ async function getBTC(cur = 'USD') {
   return cryptos
 }
 
-export {formatPrice, formatCurrency, getBTC}
+const passwordExists = () => {
+  const password = localStorage.getItem("password")
+  console.log("password=", password)
+  return password != null
+}
+
+
+export {formatPrice, formatCurrency, getBTC, passwordExists}
 
 /*
 const os = require('os')
