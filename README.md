@@ -10,6 +10,7 @@ It uses react-bootstrap
 - Insert your tradeogre holdings in a new file src/wallet.js (you can find an example in [src/wallet_example.js](src/wallet_example.js)).
 - In the project directory, you can run:
 
+### `yarn install`
 ### `yarn start`
 
 Runs the app in the development mode.\
