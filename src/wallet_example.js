@@ -20,7 +20,7 @@ const walletData = [
   {
     key: "tradeogre_BTC",
     exchangeId: "tradeogre",
-    ticker: "XUSD",
+    ticker: "BTC",
     name: "Bitcoin",
     balance: 0.1,
     price: 0,

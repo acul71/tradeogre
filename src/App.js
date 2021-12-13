@@ -70,7 +70,7 @@ function App() {
       console.log('getMakets: response.data=', response.data)
       const myCoinData = deepcopy(coinData)
       myCoinData.forEach( (coin,idx) => {
-        if (coin.ticker === 'XUSD') {
+        if (coin.ticker === 'BTC') {
           coin.price = btc
         } else {
           const exchangeCoin = response.data.filter( exchangeCoin => exchangeCoin['BTC-' + coin.ticker] )
