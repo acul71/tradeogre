@@ -26,6 +26,8 @@ import Home from './components/Home'
 import {getBTC} from './lib/utils'
 import {walletData} from './wallet'
 
+import { passwordExists } from './lib/utils'
+
 const deepcopy = require('deepcopy')
 
 
@@ -39,12 +41,12 @@ function About() {
   return <h2>About</h2>;
 }
 
-function Users() {
-  return <h2>Users</h2>;
+function User() {
+  return <h2>User</h2>;
 }
 
 
-function App(props) {
+function App() {
   const [authFlag, setAuthFlag] = useState(false)
 
   function enableAuth() {
@@ -52,7 +54,7 @@ function App(props) {
     setAuthFlag(true)
   }
 
-
+  const [firstTime, setFirstTime] = useState(!passwordExists())
   const [coinData, setCoinData] = useState([])
   const [currency, setCurrency] = useState('USD')
   //const [refreshTime, setRefreshTime] = useState(RefreshTimeSec)
@@ -68,15 +70,18 @@ function App(props) {
       console.log('getMakets: response.data=', response.data)
       const myCoinData = deepcopy(coinData)
       myCoinData.forEach( (coin,idx) => {
-  
-        const exchangeCoin = response.data.filter( exchangeCoin => exchangeCoin['BTC-' + coin.ticker] )
-        //const exchangeCoin = response.data.filter( (exchangeCoin,idx) => idx === 0 )
-        console.log("getMarkets: exchangeCoin=", exchangeCoin)
-        try {
-          //coin.price = parseFloat(exchangeCoin[0]['BTC-' + coin.ticker].price)
-          coin.price = parseFloat(exchangeCoin[0]['BTC-' + coin.ticker].price) * btc
-        } catch (error) {
-          console.error(error);
+        if (coin.ticker === 'XUSD') {
+          coin.price = btc
+        } else {
+          const exchangeCoin = response.data.filter( exchangeCoin => exchangeCoin['BTC-' + coin.ticker] )
+          //const exchangeCoin = response.data.filter( (exchangeCoin,idx) => idx === 0 )
+          console.log("getMarkets: exchangeCoin=", exchangeCoin)
+          try {
+            //coin.price = parseFloat(exchangeCoin[0]['BTC-' + coin.ticker].price)
+            coin.price = parseFloat(exchangeCoin[0]['BTC-' + coin.ticker].price) * btc
+          } catch (error) {
+            console.error(error);
+          }
         }
         //console.log("getMarkets: coin=", coin)
       })
@@ -115,13 +120,24 @@ function App(props) {
     
   }
 
+  /*
+  const testSessionStorage = (n) => {
+    const pack = "x".repeat(1024*100)
+    for (let i = 0; i < n; i++) {
+      sessionStorage.setItem('Z_' + i, pack)
+      console.log("TESTEST.\r")
+      
+    }
+  }
+*/
+
   useEffect( () => {
     // try catch here: Error coinData is undefined!!!!
     if (coinData.length === 0) {
       // componentDidMount
       console.log("componentDidMount")
       componentDidMount()
-
+      //testSessionStorage()
     } else {
       // componentDidUpdate
       console.log("componentDidUpdate")
@@ -129,52 +145,51 @@ function App(props) {
     }
   })
 
-
-  if (props.firstTime) {
+  console.log('firstTime=', firstTime)
+  if (firstTime) {
     return(
-      <FirstTimePass />
+      <FirstTimePass setFirstTime={setFirstTime} />
     )
   }
 
   if (authFlag) {
-
-  return (
-    <div className="App">
-      <Router>      
-        <Navbar bg="light" expand="lg">
-          <LinkContainer to="/">
-            <Navbar.Brand href="#home">TradeOgre</Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <LinkContainer to='/about'>
-                <Nav.Link>About</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to='/users'>
-                <Nav.Link href="#users">Users</Nav.Link>
-              </LinkContainer>
-            </Nav>
-            
-          </Navbar.Collapse>
-        </Navbar>
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/">
-            <Home coinData={coinData} currency={currency}/>
-          </Route>
-        </Switch>
-        
-      </Router>
-    </div>
-  )
+    return (
+      <div className="App">
+        <Router>      
+          <Navbar bg="light" expand="lg">
+            <LinkContainer to="/">
+              <Navbar.Brand href="#home">TradeOgre</Navbar.Brand>
+            </LinkContainer>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <LinkContainer to='/about'>
+                  <Nav.Link>About</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to='/user'>
+                  <Nav.Link href="#user">User</Nav.Link>
+                </LinkContainer>
+              </Nav>
+              
+            </Navbar.Collapse>
+          </Navbar>
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/about">
+              <About />
+            </Route>
+            <Route path="/user">
+              <User />
+            </Route>
+            <Route path="/">
+              <Home coinData={coinData} currency={currency}/>
+            </Route>
+          </Switch>
+          
+        </Router>
+      </div>
+    )
   } else {
     return (
       <Login enableAuth={enableAuth}/>
